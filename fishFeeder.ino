@@ -4,12 +4,17 @@ unsigned int sec = 0;
 unsigned int mins = 0;
 unsigned int hour = 0;
 
+const int ondemand =7;
+const int feed = 8;
+const int led = 13;
+
 void setup(){
     Serial.begin(9600);
     Serial.println("Up and Running");
 
-    pinMode(13, OUTPUT);
-    pinMode(7, INPUT);
+    pinMode(ondemand, OUTPUT);
+    pinMode(feed, INPUT);
+    pinMode(led, OUTPUT);
 
     //timer init 16' timer
     noInterrupts();
@@ -23,11 +28,12 @@ void setup(){
 
 ISR(TIMER1_OVF_vect){
     sec=sec+1;
+    digitalWrite(led, !digitalRead(led));
     TCNT1 = 0;
 }
 
 void loop(){
-  while(digitalRead(7)){
+  while(digitalRead(ondemand)){
     if(sec==60){
         mins=mins+1;
         sec=0;
@@ -37,15 +43,16 @@ void loop(){
         mins=0;
     }
     if(hour==feedDelay){
-      digitalWrite(13, HIGH);
+      digitalWrite(feed, HIGH);
       delay(feedTime);
       Serial.println("Fishes Fed!!");
-      digitalWrite(13, LOW);
+      digitalWrite(feed, LOW);
       hour=0;
     }
-  digitalWrite(13, HIGH);
+  digitalWrite(feed, HIGH);
   delay(feedTime);
   Serial.println("Fishes Fed!!");
-  digitalWrite(13, LOW);
+  digitalWrite(feed, LOW);
   }
 }
+
