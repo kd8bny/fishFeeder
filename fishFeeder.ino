@@ -31,7 +31,7 @@ void loop(){
       sec=0;
   }
   if(mins==60){
-      hour = hour+1;
+      hour=hour+1;
       mins=0;
   }
   if(hour==feedDelay){
@@ -39,5 +39,6 @@ void loop(){
     delay(feedTime);
     Serial.println("Fishes Fed!!");
     digitalWrite(13, LOW);
+    hour=0;
   }
 }
